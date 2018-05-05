@@ -11,8 +11,14 @@
     $scope.showSuggestion = function() {
       var foodList = splitFoodList($scope.food, ',');
       var foodTotalAmount = countNum(foodList);
-      
-      return(foodTotalAmount == 0 ? $scope.comment = "Please enter data first." : (foodTotalAmount > 3 ? $scope.comment = "Too much!" : $scope.comment = "Enjoy!"));
+
+      return (
+        foodTotalAmount == 0
+        ? $scope.comment = "Please enter data first."
+        : (
+          foodTotalAmount > 3
+          ? $scope.comment = "Too much!"
+          : $scope.comment = "Enjoy!"));
     }
 
     function countNum(array) {
