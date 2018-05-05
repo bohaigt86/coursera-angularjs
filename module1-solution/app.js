@@ -28,7 +28,7 @@
           totalNum++;
         }
       }
-      console.log(totalNum);
+
       return totalNum;
     }
 
