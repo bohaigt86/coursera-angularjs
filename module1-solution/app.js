@@ -3,14 +3,14 @@
 
   angular.module('LunchCheck', []).controller('LunchCheckController', LunchCheckController);
 
-  LunchCheckController.$inject = ['$scope', '$filter'];
+  LunchCheckController.$inject = ['$scope'];
 
-  function LunchCheckController($scope, $filter) {
+  function LunchCheckController($scope) {
     $scope.food = '';
     $scope.comment = '';
     $scope.showSuggestion = function() {
-      var foodList = splitFoodList($scope.food, ',');
-      var foodTotalAmount = countNum(foodList);
+      var foodList = splitString($scope.food, ',');
+      var foodTotalAmount = countItem(foodList);
 
       return (
         foodTotalAmount == 0
@@ -21,7 +21,7 @@
           : $scope.comment = "Enjoy!"));
     }
 
-    function countNum(array) {
+    function countItem(array) {
       var totalNum = 0
       for (var i = 0; i < array.length; i++) {
         if (array[i] != "") {
@@ -32,7 +32,7 @@
       return totalNum;
     }
 
-    function splitFoodList(stringToSplit, separator) {
+    function splitString(stringToSplit, separator) {
       var arrayOfStrings = stringToSplit.split(separator);
 
       return arrayOfStrings;
