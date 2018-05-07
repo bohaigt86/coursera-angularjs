@@ -25,9 +25,41 @@
   ```javascript
   (function () { //The first pair of parentheses (function(){...}) turns the code within (in this case, a function) into an expression
 
-    return "Hello world!"
+    var msg = "Hello world!";
 
   })() //the second pair of parentheses (function(){...})() calls the function that results from that evaluated expression.
+  ```
+  Speaking of isolating the internal scope, below is how JavaScript encapsulates varibales within an object:
 
+  >As Javascript does not provide a means to encapsulate properties within an object, everything can be accessed from outside.
+
+  >In order to promote encapusulation we should use a function instead of an ojbect literal to create the object.
+
+  ```javascript
+  var dog = {
+    name: "Pokki",
+    gender: "Female",
+    breed: "Toy poodle"
+  };
+
+  console.log(dog.name);
+  //Pokki
+  console.log(dog.gender);
+  //Female
+  console.log(dog.breed);
+  //Toy poodle
+
+  var dog = function () { // Functions isolate the internal scope
+    var name = "Pokki";
+    var gender = "Female";
+    var breed = "Toy poodle";
+  };
+
+  console.log(dog.name);
+  //undefined
+  console.log(dog.gender);
+  //undefined
+  console.log(dog.breed);
+  //undefined
 
   ```
