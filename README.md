@@ -41,7 +41,8 @@
 
   To throughly understand this design pattern, please read this article: [Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) from [benalman.com](http://benalman.com/). Below is the note I made.
 
-  - **How functions work in JavaScript**
+  **How functions work in JavaScript**
+
   When we define a functoin(either by function declaration or by function expression), what we get is an identifier for that function. It can be invoked by putting parentheses behind it.
 
   ```javascript
@@ -76,7 +77,7 @@
 
   This is because when JavaScript sees keyword **function**, it will treat it as function declaration not as function expression. So it will throw an SyntaxError exception for function declaration requires a name.
 
-  - **How to tackle the problem**
+  **How to tackle the problem**
 
   In order to fix this, we need to tell JavaScript to expect a function expression by wrapping it in parentheses. This is because, in JavaScript, parentheses can't contain statements.
 
@@ -96,3 +97,10 @@
 
   ```
   Also, such parentheses indicate that the function expression will be **immediately** invoked after it is created.
+
+  **Furthur reading**
+
+  - [MDN Guide - Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions)
+  - [Function Declaration vs. Function Expression](https://javascriptweblog.wordpress.com/2010/07/06/function-declarations-vs-function-expressions/)
+  - [ECMA-262-3 in detail. Chapter 5. Functions.](http://dmitrysoshnikov.com/ecmascript/chapter-5-functions/#question-about-surrounding-parentheses)
+  - [MDN Reference - Functions and Functions Scope](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)
