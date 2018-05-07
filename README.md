@@ -8,7 +8,6 @@
   1. [Dependency Injection](#dependency-injection)
   1. [Directives](#directives)
   1. [Services](#services)
-
   1. [IIFE](#iife)
 
 ### Dependency Injection
@@ -25,11 +24,75 @@
   Example from [a stackoverflow article](https://stackoverflow.com/questions/8228281/what-is-the-function-construct-in-javascript):
 
   ```javascript
-  (function () { //The first pair of parentheses (function(){...}) turns the code within (in this case, a function) into an expression
+  /*
+    The first pair of parentheses (function(){...}) turns
+    the code within (in this case, a function) into an expression
+  */
+  (function () {
 
     var msg = "Hello world!";
 
-  })() //the second pair of parentheses (function(){...})() calls the function that results from that evaluated expression.
+  })()
+  /*
+    The second pair of parentheses (function(){...})() calls
+    the function that results from that evaluated expression.
+  */
   ```
-  To throughly understand this design pattern, please read this article: [Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) from [benalman.com](http://benalman.com/).
-  Below is the note I made.
+
+  To throughly understand this design pattern, please read this article: [Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) from [benalman.com](http://benalman.com/). Below is the note I made.
+
+  - **How functions work in JavaScript**
+  When we define a functoin(either by function declaration or by function expression), what we get is an identifier for that function. It can be invoked by putting parentheses behind it.
+
+  ```javascript
+    function addOne() {
+      var i = 0;
+
+      return function () {
+        console.log(++i);
+      };
+    }
+
+    var plusOne = addOne(); // plushOne() is just a reference to addOne(), i's value is within its own scope
+    plusOne(); // 1
+    plusOne(); // 2
+
+  ```
+  But when a function is created by function expression:
+
+  ```javascript
+    var foo = function () {
+      /* some code */
+    }
+
+    // It is possible to invoke the function like this:
+    foo();
+
+    // But not like this:
+    function () {
+      /* some code */
+    }(); // SyntaxError: Unexpected token (
+  ```
+
+  This is because when JavaScript sees keyword **function**, it will treat it as function declaration not as function expression. So it will throw an SyntaxError exception for function declaration requires a name.
+
+  - **How to tackle the problem**
+
+  In order to fix this, we need to tell JavaScript to expect a function expression by wrapping it in parentheses. This is because, in JavaScript, parentheses can't contain statements.
+
+  ```javascript
+    /*
+      Either of the following two patterns can be used
+      to immediately invoke a function expression,
+      utilizing the function's execution context to create "privacy."
+    */
+    (function () {
+      /* some code */
+    })();
+
+    (function () {
+      /* some code */
+    }());
+
+  ```
+  Also, such parentheses indicate that the function expression will be **immediately** invoked after it is created.
