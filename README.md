@@ -22,6 +22,8 @@
 
   The second part is creating the immediately executing function expression (), through which the JavaScript engine will directly interpret the function.
 
+  Example from [a stackoverflow article](https://stackoverflow.com/questions/8228281/what-is-the-function-construct-in-javascript):
+
   ```javascript
   (function () { //The first pair of parentheses (function(){...}) turns the code within (in this case, a function) into an expression
 
@@ -29,37 +31,5 @@
 
   })() //the second pair of parentheses (function(){...})() calls the function that results from that evaluated expression.
   ```
-  Speaking of isolating the internal scope, below is how JavaScript encapsulates varibales within an object:
-
-  >As Javascript does not provide a means to encapsulate properties within an object, everything can be accessed from outside.
-
-  >In order to promote encapusulation we should use a function instead of an ojbect literal to create the object.
-
-  ```javascript
-  var dog = {
-    name: "Pokki",
-    gender: "Female",
-    breed: "Toy poodle"
-  };
-
-  console.log(dog.name);
-  //Pokki
-  console.log(dog.gender);
-  //Female
-  console.log(dog.breed);
-  //Toy poodle
-
-  var dog = function () { // Functions isolate the internal scope
-    var name = "Pokki";
-    var gender = "Female";
-    var breed = "Toy poodle";
-  };
-
-  console.log(dog.name);
-  //undefined
-  console.log(dog.gender);
-  //undefined
-  console.log(dog.breed);
-  //undefined
-
-  ```
+  To throughly understand this design pattern, please read this article: [Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) from [benalman.com](http://benalman.com/).
+  Below is the note I made.
