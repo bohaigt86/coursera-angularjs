@@ -75,7 +75,7 @@
     }(); // SyntaxError: Unexpected token (
   ```
 
-  This is because when JavaScript sees keyword **function**, it will treat it as function declaration not as function expression. So it will throw an SyntaxError exception for function declaration requires a name.
+  This is because when JavaScript sees the keyword **function**, it will not treat it as a function expression but as a function declaration. So it will throw an SyntaxError exception, for function declaration requires a name.
 
   **How to tackle the problem**
 
