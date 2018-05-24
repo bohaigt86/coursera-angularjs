@@ -22,20 +22,34 @@
     return ddo;
   }
 
-  function FoundItemsDirectiveController() {}
+  function FoundItemsDirectiveController() {
+    var list = this;
+
+    list.isEmpty = function() {
+      return list.items != undefined && list.items.length === 0;
+    }
+  }
 
   NarrowItDownController.$inject = ['MenuSearchService'];
   function NarrowItDownController(MenuSearchService) {
     var refine = this;
 
     refine.searchTerm ="";
-    refine.found = [];
+    // refine.found = [];
+
+
 
     refine.showRefine = function () {
+
+      if (refine.searchTerm === "") {
+        refine.found = [];
+        return;
+      }
+
       MenuSearchService.getMatchedMenuItems(refine.searchTerm)
       .then(function (foundItems) {
         refine.found = foundItems;
-        console.log(refine.found);
+        // console.log(refine.found);
       })
       .catch(function (error) {
         console.log("Something went terribly wrong.");
@@ -65,11 +79,12 @@
         var itemsInMenu = response.data.menu_items;
 
         for(var i = 0; i < itemsInMenu.length; i++) {
-          if (itemsInMenu[i].description.match(searchTerm)) {
+          if (itemsInMenu[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) {
             foundItems.push(itemsInMenu[i]);
           }
         }
-
+        console.log("The list contains:");
+        console.log(foundItems);
         return foundItems;
       });
     };
