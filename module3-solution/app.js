@@ -35,10 +35,6 @@
     var refine = this;
 
     refine.searchTerm ="";
-    // refine.found = [];
-
-
-
     refine.showRefine = function () {
 
       if (refine.searchTerm === "") {
