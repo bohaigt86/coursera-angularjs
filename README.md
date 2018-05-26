@@ -27,10 +27,41 @@
   - holds the data displayed in the view
   - responds to view events, aka presentation logic
   - calls for other functionality to handel business logic
-  - NEVER asks the view to display anthing
+  - NEVER asks the view to display anything
 
 
 ## Data Binding
+  AngularJS implements two-way data binding. Any changes to the view are immediately reflected in the model, and any changes in the model are propagated to the view. The view can be regarded as an instant projection of your model. Therefore the controller is completedly seperated from the view and unaware of it.
+
+  ```html
+  <!DOCTYPE html>
+  <html ng-app="myFirstApp">
+    <head>
+      <meta charset="utf-8">
+      <script src="angular.min.js"></script>
+      <script src="app.js"></script>
+      <title>My first AngularJS App</title>
+    </head>
+    <body>
+      <div ng-controller="MyFirstController">
+
+      </div>
+    </body>
+  </html>
+  ````
+
+  ```javascript
+  (function () { // use iife to prevent local variables from polluting the global scope
+  'use strict'; //avoid careless mistakes
+
+  angular.module('myFirstApp', []) //Bound to DOM tree in the html file
+
+  .controller('MyFirstController', function () { //controller is how we define viewmodel
+
+  });
+
+  })();
+  ```
 
 ## Scope
 ### Prototypical Inheritance and Scope Inheritance
