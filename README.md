@@ -2,7 +2,7 @@
 [Coursera resouces on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
 
 ## Key concepts
-  1. [Model-View-ViewModel](#mvvm)
+  1. [Model-View-ViewModel](#model-view-viewmodel)
   1. [Data Binding](#data-binding)
   1. [Scope](#scope)
   1. [Dependency Injection](#dependency-injection)
