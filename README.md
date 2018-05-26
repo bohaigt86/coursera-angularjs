@@ -21,11 +21,17 @@
   A directive is a function which excutes when the compiler encounters it in the DOM.
   Directives apply special behaviour to attributes and elements in the HTML.
 
+  Below are examples of invoking the ng-bind directives:
+
   ```javascript
   <span ng-bind="exp"></span>
   <span class="ng-bind: exp;"></span>
   <ng-bind></ng-bind>
   ```
-### Compilation
+
+  ### Interpolation Directive
+
+### Compilation ([Go to AngularJS doc](https://docs.angularjs.org/guide/compiler))
   Compile is an AngularJS service.
-  Compilation happens in two phases. In the first phase, it traverses the DOM and collect all directives and returns a linking function. In the second phase, it combines the directives with a scope and produce a live view.
+
+  Compilation happens in two phases: comiple and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
