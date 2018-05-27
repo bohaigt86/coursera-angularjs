@@ -3,10 +3,12 @@
 
 ## Key concepts
   1. [Model-View-ViewModel](#model-view-viewmodel)
-  1. [Data Binding](#data-binding)
   1. [Controllers](#controllers)
   1. [Scope](#scope)
+  1. [Expressions and Interpolation](#expressions-and-interpolation)
+  1. [Data Binding](#data-binding)
   1. [Dependency Injection](#dependency-injection)
+  1. [Filters](#filters)
   1. [Directives](#directives)
   1. [Modules](#modules)
   1. [Services](#services)
@@ -30,41 +32,6 @@
   - responds to view events, aka presentation logic
   - calls for other functionality to handel business logic
 
-
-## Data Binding
-  AngularJS implements two-way data binding. The controller(viewmodel) continuously update changes: any changes to the view are immediately reflected in the model, and any changes in the model are propagated to the view. The view can be regarded as an instant projection of your model. The controller is completedly seperated from the view and unaware of it.
-
-  Below shows how to bind the controller to the view.
-
-  ```html
-  <!DOCTYPE html>
-  <html ng-app="myFirstApp">
-    <head>
-      <meta charset="utf-8">
-      <script src="angular.min.js"></script>
-      <script src="app.js"></script>
-      <title>My first AngularJS App</title>
-    </head>
-    <body>
-      <div ng-controller="MyFirstController">
-
-      </div>
-    </body>
-  </html>
-  ````
-
-  ```javascript
-  (function () { // use iife to prevent local variables from polluting the global scope
-  'use strict'; //avoid careless mistakes
-
-  angular.module('myFirstApp', []) //bound to DOM tree in the html file
-
-  .controller('MyFirstController', function () { //controller is how we define viewmodel
-
-  });
-
-  })();
-  ```
 ## Controllers
   In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
 
@@ -122,18 +89,102 @@
   Scope is the glue between app controller and the view. During the compilation linking phase, the directives set up \$watch expressions on the scope. The \$watch allows the directive to be notified of property changes,
   which allows the directive to render the updated value of the DOM elememt(s).
 
-  
+  Both controllers and directives have reference to the scope, but not to each other. This arrangement isolates the controller from the directive as well as from the DOM. This is an important point since it makes the controllers view agnostic, which greatly improves the testing story of the applications.
 
 ### Scope characteristics
-  - Scope
+  - Scopes provide APIs ($watch) to observe model mutations.
+
+  - Scopes provide APIs ($apply) to propagate any model changes through the system into the view from outside of the "AngularJS realm" (controllers, services, AngularJS event handlers).
+
+  - Scopes can be nested to limit access to the properties of application components while providing access to shared model properties. Nested scopes are either "child scopes" or "isolate scopes". A "child scope" (prototypically) inherits properties from its parent scope. An "isolate scope" does not. See isolated scopes for more information.
+
+  - Scopes provide context against which expressions are evaluated. For example {{username}} expression is meaningless, unless it is evaluated against a specific scope which defines the username property.
 
 ### Prototypical Inheritance and Scope Inheritance
 
 ### Isolate Scope
   Breaks the prototypal inheritance of the scope from the parent.
 
+## Expressions and Interpolation
+  - Expressions are evaluated against a scope object. They are tied to the scope they are in.
+  - Expression evaluation don't throw ReferenceError or TypeError.
+  - Can use filter with in an expression to format data before displaying it.
+  - Can not use control flow statements.
+
+  AngularJS interpolation replaces expressions in a string with values.
+
+## Data Binding
+  AngularJS implements two-way data binding. The controller(viewmodel) continuously update changes: any changes to the view are immediately reflected in the model, and any changes in the model are propagated to the view. The view can be regarded as an instant projection of your model. The controller is completedly seperated from the view and unaware of it.
+
+  Below shows how to bind the controller to the view.
+
+  ```html
+  <!DOCTYPE html>
+  <html ng-app="myFirstApp">
+    <head>
+      <meta charset="utf-8">
+      <script src="angular.min.js"></script>
+      <script src="app.js"></script>
+      <title>My first AngularJS App</title>
+    </head>
+    <body>
+      <div ng-controller="MyFirstController">
+
+      </div>
+    </body>
+  </html>
+  ````
+
+  ```javascript
+  (function () { // use iife to prevent local variables from polluting the global scope
+  'use strict'; //avoid careless mistakes
+
+  angular.module('myFirstApp', []) //bound to DOM tree in the html file
+
+  .controller('MyFirstController', function () { //controller is how we define viewmodel
+
+  });
+
+  })();
+  ```
+
+
 ## Dependency Injection
   Dependency injection is a technique whereby one object supplies the dependencies of another object. The intent behind dependency injection is to **decouple** objects to the extent that no client code has to be changed simply because an object it depends on needs to be changed to a different one.
+
+  The AngularJS injector subsystem is in charge of creating components, resolving their dependencies, and providing them to other components as requested.
+
+## Filters
+
+### Creating Custom Filters
+  Step 1. Create Filter Factory Function
+
+  ```javascript
+  function CustomFilterFactory() {
+    return function (input) {
+      return changeInput;
+    }
+  }
+  ```
+
+  Step 2. Register Filter Factory With Module
+
+  ```javascript
+  angular.module('app', [])
+  .controller('ctrl', Ctrl)
+  .filter('custom', CustomFilterFactory);
+  ```
+
+  Step 3. Inject It With nameFilter
+
+  ```javascript
+  Ctrl.$inject('$scope', 'customFilter');
+  
+  function Ctrl($scope, customFilter) {
+    var msg = "some input";
+    customFilter(msg);
+  }
+  ```
 
 ## Directives
   A directive is a function which excutes when the compiler encounters it in the DOM.
@@ -154,7 +205,7 @@
 
   Compilation happens in two phases: comiple and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
 
-##Modules
+## Modules
   Think of a module as a container of different parts of an app, such as controllers, directives and components.
   Think of a module as the "main function" of your app. It declaratively specify how an app should be bootstrapped.
 
