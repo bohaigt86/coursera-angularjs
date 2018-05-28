@@ -9,12 +9,9 @@
   <body>
     <h1>Playground</h1>
     <div ng-controller="MyFirstController">
-      <input type="text" ng-model="name">
+      <button type="button" ng-click="showWatchers()">Click</button>
       <div class="">
-        My name is: {{name}}
-      </div>
-      <div class="">
-        {{ greeting()}}
+        <button type="button" ng-click="countOnce()">Click to Count Once</button>
       </div>
     </div>
   </body>

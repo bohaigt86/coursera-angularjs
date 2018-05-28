@@ -9,10 +9,12 @@
   1. [Data Binding](#data-binding)
   1. [Dependency Injection](#dependency-injection)
   1. [Filters](#filters)
-  1. [Directives](#directives)
-  1. [Modules](#modules)
+  1. [Digest Cycle](#digest-cycle)
   1. [Services](#services)
+  1. [Directives](#directives)
   1. [Components](#components)
+  1. [Modules](#modules)
+
 
 ## Model-View-ViewModel
   Model: represents and holds RAW DATA (i.e. data from database or rest api calls from servers )
@@ -163,7 +165,7 @@
   function CustomFilterFactory() {
     return function (input) {
       return changeInput;
-    }
+    };
   }
   ```
 
@@ -179,12 +181,31 @@
 
   ```javascript
   Ctrl.$inject('$scope', 'customFilter');
-  
+
   function Ctrl($scope, customFilter) {
     var msg = "some input";
     customFilter(msg);
   }
   ```
+
+## Digest Cycle
+  AngularJS calls digest cycle when users perform some activity that triggers some Angular-aware event (such as ng-click, not like onclick), and model data got changed because of this activity.
+
+  Angular calls digest cycle with the help of \$watch() and \$digest() functions itself in case of both the values are different.
+
+  Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listener which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model.
+
+  As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of Digest cycle is called Dirty Check.
+
+### Understading $watch
+
+
+### Understading $digest
+
+
+## Services
+
+### Custom Services
 
 ## Directives
   A directive is a function which excutes when the compiler encounters it in the DOM.
