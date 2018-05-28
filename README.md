@@ -150,7 +150,6 @@
   })();
   ```
 
-
 ## Dependency Injection
   Dependency injection is a technique whereby one object supplies the dependencies of another object. The intent behind dependency injection is to **decouple** objects to the extent that no client code has to be changed simply because an object it depends on needs to be changed to a different one.
 
@@ -207,7 +206,7 @@
 ### Understading $watch
   It's a best practice to let AngularJS set up watchers for us, for instance, using {{ }} expression/interpolation or ng-model.
 
-  However, we still can manually set up and fire a watcher to understand how it works:
+  However, we still can manually set up then fire a watcher to understand how it works:
 
   It will look like this:
 
@@ -237,7 +236,7 @@
   // newValue: 1
   ```
 
-  As mentioned earlier, it is better to let AngularJS set up watchers for us. If I implement interpolation or an expression in the html file, a watcher will be added by AngularJS during compilation.
+  As mentioned earlier, it is better to let AngularJS set up watchers for us. If we implement interpolation or an expression in the html file, a watcher will be added by AngularJS during compilation.
 
   ```html
   <div ng-controller="myController">
@@ -247,7 +246,7 @@
   </div>
   ```
 
-  If we add use a ng-model directive, AngularJS will set up a watcher as well.
+  If we use a ng-model directive, AngularJS will set up a watcher as well.
 
   ```html
   <div ng-controller="myController">
@@ -255,10 +254,48 @@
   </div>
   ```
 
-
-
 ### Understading $apply
+  Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
+  Let's have a look at how it works. Under one condition we want to manully trigger the \$scope.\$apply() manually: when you want to handle with events that are not Angular-aware, such as onclick or timeout.
+
+  ```javascript
+  $scope.num = 0;
+
+  $scope.addOne = function () {
+    setTimeout(function () { // The chunk of code of setTimeout is seperated from the AngularJS events queue
+      $scope.num++;
+      $scope.$digest(); // This line is a must to trigger digest cycle
+    }, 2000);
+  };
+  ```
+  If we call addOne() in Angular context, it will not trigger digest cycle without \$scope.\$digest(), as Angular is not aware of what's happening.
+
+  Instead of calling $digest() directly, here's a better way of doing it:
+
+  ```javascript
+  $scope.num = 0;
+
+  $scope.addOne = function () {
+    setTimeout(function () { // The chunk of code of setTimeout is seperated from the AngularJS events queue
+      $scope.$apply(function () { // Manually call $apply() to trigger digest cycle
+        $scope.num++;
+      });
+    }, 2000);
+  };
+  ```
+
+  A even better way to tackle this problem is to use native Angular services, in thie case, $timeout.
+
+  ```javascript
+  $scope.num = 0;
+
+  $scope.addOne = function () {
+    $timeout(function () {
+      $scope.num++;
+    }, 2000);
+  };
+  ```
 
 ## Services
 

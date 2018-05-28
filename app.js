@@ -13,7 +13,7 @@ function MyFirstController($scope) {
   // Add a function that can manipulate the value of 'num'
   $scope.addOne = function () {
     $scope.num++;
-  }
+  };
   // Set up a watcher on 'num', once its value changes, the listener function gets excuted
   $scope.$watch('num', function (newValue, oldValue) {
     console.log('oldValue: ' + oldValue);
