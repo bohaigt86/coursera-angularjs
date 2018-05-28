@@ -188,7 +188,7 @@
   ```
 
 ## Digest Cycle
-  AngularJS calls digest cycle when users perform some activity that triggers some Angular-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
+  AngularJS calls digest cycle when users perform some activity that triggers some AngularJS-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
 
   Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model, achieveing the magical two-way binding.
 
@@ -257,7 +257,7 @@
 ### Understading $apply()
   Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call \$digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
-  Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not Angular-aware, such as onclick or timeout.
+  Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not AngularJS-aware, such as onclick or timeout.
 
   ```javascript
   $scope.num = 0;
@@ -269,7 +269,7 @@
     }, 2000);
   };
   ```
-  If we call addOne() in Angular context, the digest cycle will not be triggered without \$scope.\$digest(), as Angular is not aware of what's happening.
+  If we call addOne() in AngularJS context, the digest cycle will not be triggered without \$scope.\$digest(), as AngularJS is not aware of what's happening.
 
   Instead of calling $digest() directly, here's a better way of doing it:
 
@@ -285,7 +285,7 @@
   };
   ```
 
-  A even better way to tackle this problem is to use native Angular services, in thie case, $timeout.
+  A even better way to tackle this problem is to use native AngularJS services, in thie case, $timeout.
 
   ```javascript
   $scope.num = 0;
