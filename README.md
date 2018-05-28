@@ -13,6 +13,7 @@
   1. [Services](#services)
   1. [Directives](#directives)
   1. [Components](#components)
+  1. [Compilation](#compilation)
   1. [Modules](#modules)
 
 
@@ -285,7 +286,7 @@
   };
   ```
 
-  A even better way to tackle this problem is to use native AngularJS services, in thie case, $timeout.
+  A even better way to tackle this problem is to use native AngularJS services, in this case, $timeout.
 
   ```javascript
   $scope.num = 0;
@@ -299,11 +300,12 @@
 
 ## Services
 
-### Custom Services
 
 ## Directives
   A directive is a function which excutes when the compiler encounters it in the DOM.
   Directives apply special behaviour to attributes and elements in the HTML.
+
+  The ngBind attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
 
   Below are examples of invoking the ng-bind directives:
 
@@ -313,9 +315,9 @@
   <ng-bind></ng-bind>
   ```
 
-### Interpolation Directive
+## Components
 
-### Compilation ([Go to angularjs.org](https://docs.angularjs.org/guide/compiler))
+## Compilation ([Go to angularjs.org](https://docs.angularjs.org/guide/compiler))
   Compile is an AngularJS service.
 
   Compilation happens in two phases: comiple and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
