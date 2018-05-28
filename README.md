@@ -194,20 +194,70 @@
   Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model, achieveing the magical two-way binding.
 
   As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of Digest cycle is called Dirty Check.
-### Code example
-  1. Understading $watch
 
-  To manually set up a watcher:
+  In the cycle, 3 functions are involved at some point. They are \$digest, \$watch and \$apply.
+
+  Let's take changing model via ng-model for example:
+
+  - AngularJS calls $digest to trigger a digest cycle
+  - $digest cycle fires all watchers
+  - if a watcher finds a change in scope model, the corresponding listener function excute
+  - the view get synchronized with the model
+
+### Understading $watch
+  It's a best practice to let AngularJS set up watchers for us, for instance, using {{ }} expression/interpolation or ng-model.
+
+  However, we still can manually set up and fire a watcher to understand how it works:
+
+  It will look like this:
 
   ```javascript
-  $scope.$watch(modelData, function (oldValue, newValue) {
+  $scope.$watch(modelData, function (newValue, oldValue) {
     // Synchronize the view with the model
   });
   ```
   The second argument passed to $watch is known as a listener function. It is called whenever the value of modelData changes.
 
+  Below is an example:
 
-  1. Understading $apply
+  ```javascript
+  // Add a property 'num' to the scope
+  $scope.num = 0;
+  // Add a function that can manipulate the value of 'num'
+  $scope.addOne = function () {
+    $scope.num++;
+  }
+  // Set up a watcher on 'num', once its value changes, the listener function gets excuted
+  $scope.$watch('num', function (newValue, oldValue) {
+    console.log('oldValue: ' + oldValue);
+    console.log('newValue: ' + newValue);
+  });
+  // Once addOne() is called to change the value of 'num', console will output:
+  // oldValue: 0
+  // newValue: 1
+  ```
+
+  As mentioned earlier, it is better to let AngularJS set up watchers for us. If I implement interpolation or an expression in the html file, a watcher will be added by AngularJS during compilation.
+
+  ```html
+  <div ng-controller="myController">
+    <div>
+      The number is now: {{ num }}.
+    </div>
+  </div>
+  ```
+
+  If we add use a ng-model directive, AngularJS will set up a watcher as well.
+
+  ```html
+  <div ng-controller="myController">
+    <input type="number" ng-model="num">
+  </div>
+  ```
+
+
+
+### Understading $apply
 
 
 ## Services

@@ -9,10 +9,11 @@
   <body>
     <h1>Playground</h1>
     <div ng-controller="MyFirstController">
-      <button type="button" ng-click="showWatchers()">Click</button>
-      <div class="">
-        <button type="button" ng-click="countOnce()">Click to Count Once</button>
-      </div>
+      <input type="text" ng-model="num">
+      <button type="button" name="button" ng-click="addOne()">Incremental Addition</button>
+      <h3 class="">
+        The result is: {{ num }}.
+      </h3>
     </div>
   </body>
 </html>
