@@ -189,18 +189,25 @@
   ```
 
 ## Digest Cycle
-  AngularJS calls digest cycle when users perform some activity that triggers some Angular-aware event (such as ng-click, not like onclick), and model data got changed because of this activity.
+  AngularJS calls digest cycle when users perform some activity that triggers some Angular-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
 
-  Angular calls digest cycle with the help of \$watch() and \$digest() functions itself in case of both the values are different.
-
-  Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listener which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model.
+  Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model, achieveing the magical two-way binding.
 
   As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of Digest cycle is called Dirty Check.
+### Code example
+  1. Understading $watch
 
-### Understading $watch
+  To manually set up a watcher:
+
+  ```javascript
+  $scope.$watch(modelData, function (oldValue, newValue) {
+    // Synchronize the view with the model
+  });
+  ```
+  The second argument passed to $watch is known as a listener function. It is called whenever the value of modelData changes.
 
 
-### Understading $digest
+  1. Understading $apply
 
 
 ## Services
