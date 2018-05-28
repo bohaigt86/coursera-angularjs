@@ -1,5 +1,6 @@
 # COURSERA-AngularJS
 [Coursera resouces on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
+[AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
 
 ## Key concepts
   1. [Model-View-ViewModel](#model-view-viewmodel)
