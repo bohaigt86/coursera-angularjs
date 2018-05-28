@@ -1,6 +1,5 @@
 # COURSERA-AngularJS
 [Coursera resouces on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
-[AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
 
 [AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
 
