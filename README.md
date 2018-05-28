@@ -1,6 +1,8 @@
 # COURSERA-AngularJS
 [Coursera resouces on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
 
+[AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
+
 ## Key concepts
   1. [Model-View-ViewModel](#model-view-viewmodel)
   1. [Controllers](#controllers)
@@ -15,7 +17,6 @@
   1. [Components](#components)
   1. [Compilation](#compilation)
   1. [Modules](#modules)
-
 
 ## Model-View-ViewModel
   Model: represents and holds RAW DATA (i.e. data from database or rest api calls from servers )
