@@ -203,7 +203,7 @@
   - if a watcher finds a change in scope model, the corresponding listener function excute
   - the view get synchronized with the model
 
-### Understading $watch
+### Understading $watch()
   It's a best practice to let AngularJS set up watchers for us, for instance, using {{ }} expression/interpolation or ng-model.
 
   However, we still can manually set up then fire a watcher to understand how it works:
@@ -254,10 +254,10 @@
   </div>
   ```
 
-### Understading $apply
-  Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
+### Understading $apply()
+  Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call \$digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
-  Let's have a look at how it works. Under one condition we want to manully trigger the \$scope.\$apply() manually: when you want to handle with events that are not Angular-aware, such as onclick or timeout.
+  Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not Angular-aware, such as onclick or timeout.
 
   ```javascript
   $scope.num = 0;
@@ -269,7 +269,7 @@
     }, 2000);
   };
   ```
-  If we call addOne() in Angular context, it will not trigger digest cycle without \$scope.\$digest(), as Angular is not aware of what's happening.
+  If we call addOne() in Angular context, the digest cycle will not be triggered without \$scope.\$digest(), as Angular is not aware of what's happening.
 
   Instead of calling $digest() directly, here's a better way of doing it:
 
