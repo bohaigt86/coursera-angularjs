@@ -22,7 +22,7 @@
   Model: represents and holds RAW DATA (i.e. data from database or rest api calls from servers )
   - some data may be displayed in the view
   - may contain logic to retrieve data from some source
-  - NEVER contains log associated with displaying the view
+  - NEVER contains logic associated with displaying the view
 
   View: user interface
   - in a web app, it just means HTML and CSS
@@ -190,20 +190,20 @@
   ```
 
 ## Digest Cycle
-  AngularJS calls digest cycle when users perform some activity that triggers some AngularJS-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
+  AngularJS calls digest cycle when users perform some activity that triggers some Angular-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
 
   Digest cycle goes through all $scope objects and checks which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronise the view with the model, achieving the magical two-way binding.
 
-  As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of Digest cycle is called Dirty Check.
+  As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of digest cycle is called 'dirty check'.
 
-  In the cycle, 3 functions are involved at some point. They are \$digest, \$watch and \$apply.
+  In the cycle, 3 functions are involved at some point. They are \$digest(), \$watch() and \$apply().
 
   Let's take changing model via ng-model for example:
 
   - AngularJS calls $digest to trigger a digest cycle
   - $digest cycle fires all watchers
-  - if a watcher finds a change in scope model, the corresponding listener function execute
-  - the view get synchronised with the model
+  - if a watcher finds a change in scope model, the corresponding listener function executes
+  - the view gets synchronised with the model
 
 ### Understanding $watch()
   It's a best practice to let AngularJS set up watchers for us, for instance, using {{ }} expression/interpolation or ng-model.
@@ -259,7 +259,7 @@
 ### Understanding $apply()
   Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call \$digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
-  Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not AngularJS-aware, such as onclick or timeout.
+  Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not Angular-aware, such as onclick or timeout.
 
   ```javascript
   $scope.num = 0;
