@@ -300,8 +300,8 @@
   ```
 
 ### Further Reading
-  [Understanding Angular's $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
-  [Watchers, Digest Cycle And Dirty Check In AngularJS](https://www.c-sharpcorner.com/article/watchers-digest-cycle-and-dirty-check-in-angular/)
+  - [Understanding Angular's $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
+  - [Watchers, Digest Cycle And Dirty Check In AngularJS](https://www.c-sharpcorner.com/article/watchers-digest-cycle-and-dirty-check-in-angular/)
 
 ## Services
 
