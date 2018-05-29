@@ -1,5 +1,5 @@
 # COURSERA-AngularJS
-[Coursera resouces on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
+[Coursera resources on Github](https://github.com/jhu-ep-coursera/fullstack-course5)
 
 [AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
 
@@ -28,13 +28,13 @@
   - in a web app, it just means HTML and CSS
   - only displays the data that it is given
   - NEVER changes the data
-  - declaratively broadcast events but never handels them
+  - declaratively broadcast events but never handles them
 
   ViewModel: representation of the state of the view
   - holds the data displayed in the view
   - NEVER asks the view to display anything
   - responds to view events, aka presentation logic
-  - calls for other functionality to handel business logic
+  - calls for other functionality to handle business logic
 
 ## Controllers
   In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
@@ -63,8 +63,8 @@
   {{ greeting }}
   </div>
   ```
-### Adding Behavior to a Scope Object
-  In order to react to events, we need to add behavior to the scope, by attaching methods to the $scope object.
+### Adding Behaviour to a Scope Object
+  In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
 
   The following example uses a Controller to add a method, which doubles a number, to the scope:
 
@@ -82,7 +82,7 @@
   </div>
   ```
 
-  Any objects assgined to the scope become model properties. Any methods assigned to the scope becaome available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
+  Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
 
 ## Scope
   - Scope is an object that refers to the application model.
@@ -91,7 +91,7 @@
   - Scopes can watch expressions and propagate events.
 
   Scope is the glue between app controller and the view. During the compilation linking phase, the directives set up \$watch expressions on the scope. The \$watch allows the directive to be notified of property changes,
-  which allows the directive to render the updated value of the DOM elememt(s).
+  which allows the directive to render the updated value of the DOM element(s).
 
   Both controllers and directives have reference to the scope, but not to each other. This arrangement isolates the controller from the directive as well as from the DOM. This is an important point since it makes the controllers view agnostic, which greatly improves the testing story of the applications.
 
@@ -118,7 +118,7 @@
   AngularJS interpolation replaces expressions in a string with values.
 
 ## Data Binding
-  AngularJS implements two-way data binding. The controller(viewmodel) continuously update changes: any changes to the view are immediately reflected in the model, and any changes in the model are propagated to the view. The view can be regarded as an instant projection of your model. The controller is completedly seperated from the view and unaware of it.
+  AngularJS implements two-way data binding. The controller(viewmodel) continuously update changes: any changes to the view are immediately reflected in the model, and any changes in the model are propagated to the view. The view can be regarded as an instant projection of your model. The controller is completely separated from the view and unaware of it.
 
   Below shows how to bind the controller to the view.
 
@@ -192,7 +192,7 @@
 ## Digest Cycle
   AngularJS calls digest cycle when users perform some activity that triggers some AngularJS-aware event (such as ng-click, not like onclick) and model data got changed because of this activity.
 
-  Digest cycle goes through all $scope objects and checkes which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronize the view with the model, achieveing the magical two-way binding.
+  Digest cycle goes through all $scope objects and checks which one(s) got changed because of this activity. Watchers are listeners which are attached to the scope objects and keep watching about the change. They are responsible to synchronise the view with the model, achieving the magical two-way binding.
 
   As watchers update the view as per the model value change, Digest cycle runs again to check that all the values are synced up. And this extra checking of Digest cycle is called Dirty Check.
 
@@ -202,10 +202,10 @@
 
   - AngularJS calls $digest to trigger a digest cycle
   - $digest cycle fires all watchers
-  - if a watcher finds a change in scope model, the corresponding listener function excute
-  - the view get synchronized with the model
+  - if a watcher finds a change in scope model, the corresponding listener function execute
+  - the view get synchronised with the model
 
-### Understading $watch()
+### Understanding $watch()
   It's a best practice to let AngularJS set up watchers for us, for instance, using {{ }} expression/interpolation or ng-model.
 
   However, we still can manually set up then fire a watcher to understand how it works:
@@ -214,7 +214,7 @@
 
   ```javascript
   $scope.$watch(modelData, function (newValue, oldValue) {
-    // Synchronize the view with the model
+    // Synchronise the view with the model
   });
   ```
   The second argument passed to $watch is known as a listener function. It is called whenever the value of modelData changes.
@@ -228,7 +228,7 @@
   $scope.addOne = function () {
     $scope.num++;
   }
-  // Set up a watcher on 'num', once its value changes, the listener function gets excuted
+  // Set up a watcher on 'num', once its value changes, the listener function gets executed
   $scope.$watch('num', function (newValue, oldValue) {
     console.log('oldValue: ' + oldValue);
     console.log('newValue: ' + newValue);
@@ -256,7 +256,7 @@
   </div>
   ```
 
-### Understading $apply()
+### Understanding $apply()
   Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call \$digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
   Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not AngularJS-aware, such as onclick or timeout.
@@ -265,7 +265,7 @@
   $scope.num = 0;
 
   $scope.addOne = function () {
-    setTimeout(function () { // The chunk of code of setTimeout is seperated from the AngularJS events queue
+    setTimeout(function () { // The chunk of code of setTimeout is separated from the AngularJS events queue
       $scope.num++;
       $scope.$digest(); // This line is a must to trigger digest cycle
     }, 2000);
@@ -279,7 +279,7 @@
   $scope.num = 0;
 
   $scope.addOne = function () {
-    setTimeout(function () { // The chunk of code of setTimeout is seperated from the AngularJS events queue
+    setTimeout(function () { // The chunk of code of setTimeout is separated from the AngularJS events queue
       $scope.$apply(function () { // Manually call $apply() to trigger digest cycle
         $scope.num++;
       });
@@ -303,7 +303,7 @@
 
 
 ## Directives
-  A directive is a function which excutes when the compiler encounters it in the DOM.
+  A directive is a function which executes when the compiler encounters it in the DOM.
   Directives apply special behaviour to attributes and elements in the HTML.
 
   The ngBind attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
@@ -321,7 +321,7 @@
 ## Compilation ([Go to angularjs.org](https://docs.angularjs.org/guide/compiler))
   Compile is an AngularJS service.
 
-  Compilation happens in two phases: comiple and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
+  Compilation happens in two phases: compile and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
 
 ## Modules
   Think of a module as a container of different parts of an app, such as controllers, directives and components.
