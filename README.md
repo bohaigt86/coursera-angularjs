@@ -441,9 +441,10 @@
       scope: {
         // myProp is the local scope property name,
         //'=' means two-way binding with myProp's normalized name my-prop will be used in the HTML template
-        myProp: '\='
+        myProp: '='
         // using '@' to bind myAttr to the value of DOM attribute my-attribute
-        myAttr: '\@'
+        // '@' means one-way binding
+        myAttr: '@'
       },
       ...
     };
@@ -454,7 +455,7 @@
 
   ```html
   <my-directive my-prop="outerProper"></my-directive>
-  <my-directive my-attr={{ outerAttribute }}></my-directive>
+  <my-directive my-attr="{{ outerAttribute }}"></my-directive>
 
   ```
 
