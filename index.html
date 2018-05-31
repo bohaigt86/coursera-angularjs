@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html ng-app="myFirstApp">
+<html ng-app='myApp'>
   <head>
     <meta charset="utf-8">
+    <script src="jquery-3.1.0.min.js"></script>
     <script src="angular.min.js"></script>
     <script src="app.js"></script>
-    <title>My first AngularJS App</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Shopping List With Components</title>
   </head>
   <body>
-    <h1>Playground</h1>
-    <div ng-controller="MyFirstController">
-      <input type="text" ng-model="num">
-      <button type="button" name="button" ng-click="addOne()">Incremental Addition</button>
-      <h3 class="">
-        The result is: {{ num }}.
-      </h3>
+    <div ng-controller="Controller">
+      <div my-customer></div>
     </div>
   </body>
 </html>

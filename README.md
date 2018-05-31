@@ -15,8 +15,9 @@
   1. [Services](#services)
   1. [Directives](#directives)
   1. [Components](#components)
-  1. [Compilation](#compilation)
   1. [Modules](#modules)
+  1. [Compilation](#compilation)
+
 
 ## Model-View-ViewModel
   Model: represents and holds RAW DATA (i.e. data from database or rest api calls from servers )
@@ -45,7 +46,7 @@
   - set up the initial state of the $scope object
   - add behaviours to the $scope object
 
-### Setting up the initial state of a $scope object
+### Setting Up the Initial State of a $scope Object
 
   ```javascript
   var myApp = angular.module('myApp',[]); //create an module for our application
@@ -63,7 +64,8 @@
   {{ greeting }}
   </div>
   ```
-### Adding Behaviour to a Scope Object
+
+### Adding Behaviour to a $scope Object
   In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
 
   The following example uses a Controller to add a method, which doubles a number, to the scope:
@@ -83,6 +85,31 @@
   ```
 
   Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
+
+### Prototypical Inheritance
+
+### Controller As Syntax
+  Please finish reading the previous section 'Prototypical Inheritance' before you dive into this section.
+
+  'Controller as label' syntax is based on prototypical inheritance, meaning if the controller has been attached using the controller as syntax then the controller instance will be assigned to a property on the scope. The 'label' is a reference to 'this', the instance of the Controller.
+
+
+  For instance:
+
+  ```html
+  <div ng-controller='ParentController as parent'>
+    <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+    Parent value: {{ parent.value }}
+    <div ng-controller='ChildController as child'>
+      <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+      Child value: {{ child.value }}
+      <!-- It is okay to access parent.value even though we put it inside the child controller -->
+      Parent value: {{ parent.value }}
+    </div>
+  </div>
+  ```
+
+
 
 ## Scope
   - Scope is an object that refers to the application model.
@@ -200,7 +227,7 @@
 
   Let's take changing model via ng-model for example:
 
-  - AngularJS calls $digest to trigger a digest cycle
+  - AngularJS calls $digest() to trigger a digest cycle
   - $digest cycle fires all watchers
   - if a watcher finds a change in scope model, the corresponding listener function executes
   - the view gets synchronised with the model
@@ -257,7 +284,7 @@
   ```
 
 ### Understanding $apply()
-  Now we know a digest cycle is the result of AugularJS' call of \$digest. However, AngularJS doesn't call \$digest directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
+  Now we know a digest cycle is the result of AugularJS' call of \$digest(). However, AngularJS doesn't call \$digest() directly, instead it calls \$scope.\$apply() which in turn calls \$rootScope.\$digest(). As a result of this, a digest cycle starts at the \$rootScope, and subsequently visits all the child scopes calling the watchers along the way.
 
   Let's have a look at how it works. Under one condition we want to manually trigger the digest cycle: when we want to handle with events that are not Angular-aware, such as onclick or timeout.
 
@@ -309,7 +336,7 @@
   A directive is a function which executes when the compiler encounters it in the DOM.
   Directives apply special behaviour to attributes and elements in the HTML.
 
-  The ngBind attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
+  AngularJS comes with a few built-in directives, like ngBind, ngModel. Take ngBind for instance, its attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
 
   Below are examples of invoking the ng-bind directives:
 
@@ -319,7 +346,124 @@
   <ng-bind></ng-bind>
   ```
 
+### Normalization
+  AngularJS normalizes an element's tag and attribute name to determine which elements match which directives.
+
+  The normalization process is as follows:
+
+  Strip x- and data- from the front of the element/attributes.
+  Convert the \:, \-, or \_-delimited name to camelCase.
+
+  For example, the following forms are all equivalent and match the ngBind directive:
+
+  ```html
+  <div ng-controller="Controller">
+    Hello <input ng-model='name'> <hr/>
+    <span ng-bind="name"></span> <br/>
+    <span ng:bind="name"></span> <br/>
+    <span ng_bind="name"></span> <br/>
+    <span data-ng-bind="name"></span> <br/>
+    <span x-ng-bind="name"></span> <br/>
+  </div>
+  ```
+
+### Custom Directives
+  - Step 1. Register Directive
+
+  ```javascript
+  angular.module('app', [])
+  .controller('MyCtrl', MyCtrl)
+  .directive('myTag', MyTag); //MyTag is a factory function that returns DDO
+  ```
+
+  - Step 2. Define Factory Function
+  ```javascript
+  MyTag.$inject = [...];
+  function MyTag(...) {
+    var ddo= {
+      templateUrl: template.html
+      ...
+    };
+
+    return ddo; // Very important to return ddo
+  }
+  ```
+
+  - Step 3. Use in HTML
+  ```html
+  <!-- Use normalized name of MyTag-->
+  <my-tag></my-tag>
+  ```
+
+### Directive's Isolate Scope
+  To avoid high coupling between a controller and directives, we can implement isolate scope in custom direcrtives. Isolate scope is compulsory in components in AngularJS.
+
+  Directive's default scope is inherited from its parent, which may cause some problem.
+  Let's have a look at the following example where the directive hasn't used the isolate scope yet
+
+  ```html
+  <!-- index.html -->
+  <div ng-controller="MyController1 as ctrl1">
+    <my-directive></my-directive>
+  </div>
+
+  <div ng-controller="MyController2 as ctrl2">
+    <my-directive></my-directive>
+  </div>
+  ```
+
+  ```javascript
+  // app.js
+  angular.module('myModule', [])
+  .controller('MyController', MyController)
+  .directive('myDirective', MyDirective);
+
+  function MyDirective() {
+    var ddo = {
+      templateUrl: 'mydirective.html',
+    }
+  }
+  ```
+
+  ```html
+  <!-- mydirective.html -->
+  <div>
+    {{ ctrl.item.name }} <!-- it's either ctrl1 or ctrl2, this directive cannot fit in both controllers -->
+  </div>
+  ```
+
+  We often encounter this situation, so we need to re-architecture our custome directive so it becomes independent from the outer environment. Ideally the outer environment will pass a certain value into it like pass an argument into a function. This is when we need to implement isolate scope.
+
+  ```javascript
+  function MyDirective() {
+    var ddo = {
+      // using a pair of {} to isolate directive scope from the parent scope
+      scope: {
+        // myProp is the local scope property name,
+        //'=' means two-way binding with myProp's normalized name my-prop will be used in the HTML template
+        myProp: '='
+        // using '@' to bind myAttr to the value of DOM attribute my-attribute
+        myAttr: '@'
+      },
+      ...
+    };
+
+    return ddo;
+  }
+  ```
+
+
 ## Components
+  In AngularJS, a Component is a special kind of directive that uses a simpler configuration which is suitable for a component-based application structure.
+
+### Advantages of Components:
+  - simpler configuration than plain directives
+  - promote sane defaults and best practices
+  - optimized for component-based architecture
+  - writing component directives will make it easier to upgrade to Angular 2
+
+
+
 
 ## Compilation ([Go to angularjs.org](https://docs.angularjs.org/guide/compiler))
   Compile is an AngularJS service.
