@@ -9,10 +9,10 @@
   1. [Scope](#scope)
   1. [Expressions and Interpolation](#expressions-and-interpolation)
   1. [Data Binding](#data-binding)
-  1. [Dependency Injection](#dependency-injection)
-  1. [Filters](#filters)
   1. [Digest Cycle](#digest-cycle)
+  1. [Dependency Injection](#dependency-injection)
   1. [Services](#services)
+  1. [Filters](#filters)
   1. [Directives](#directives)
   1. [Components](#components)
   1. [Modules](#modules)
@@ -109,8 +109,6 @@
   </div>
   ```
 
-
-
 ## Scope
   - Scope is an object that refers to the application model.
   - Scope is an execution context for expressions.
@@ -177,43 +175,6 @@
   });
 
   })();
-  ```
-
-## Dependency Injection
-  Dependency injection is a technique whereby one object supplies the dependencies of another object. The intent behind dependency injection is to **decouple** objects to the extent that no client code has to be changed simply because an object it depends on needs to be changed to a different one.
-
-  The AngularJS injector subsystem is in charge of creating components, resolving their dependencies, and providing them to other components as requested.
-
-## Filters
-
-### Creating Custom Filters
-  Step 1. Create Filter Factory Function
-
-  ```javascript
-  function CustomFilterFactory() {
-    return function (input) {
-      return changeInput;
-    };
-  }
-  ```
-
-  Step 2. Register Filter Factory With Module
-
-  ```javascript
-  angular.module('app', [])
-  .controller('ctrl', Ctrl)
-  .filter('custom', CustomFilterFactory);
-  ```
-
-  Step 3. Inject It With nameFilter
-
-  ```javascript
-  Ctrl.$inject('$scope', 'customFilter');
-
-  function Ctrl($scope, customFilter) {
-    var msg = "some input";
-    customFilter(msg);
-  }
   ```
 
 ## Digest Cycle
@@ -326,11 +287,48 @@
   };
   ```
 
+## Dependency Injection
+  Dependency injection is a technique whereby one object supplies the dependencies of another object. The intent behind dependency injection is to **decouple** objects to the extent that no client code has to be changed simply because an object it depends on needs to be changed to a different one.
+
+  The AngularJS injector subsystem is in charge of creating components, resolving their dependencies, and providing them to other components as requested.
+
+## Services
+
+## Filters
+
+### Creating Custom Filters
+  Step 1. Create Filter Factory Function
+
+  ```javascript
+  function CustomFilterFactory() {
+    return function (input) {
+      return changeInput;
+    };
+  }
+  ```
+
+  Step 2. Register Filter Factory With Module
+
+  ```javascript
+  angular.module('app', [])
+  .controller('ctrl', Ctrl)
+  .filter('custom', CustomFilterFactory);
+  ```
+
+  Step 3. Inject It With nameFilter
+
+  ```javascript
+  Ctrl.$inject('$scope', 'customFilter');
+
+  function Ctrl($scope, customFilter) {
+    var msg = "some input";
+    customFilter(msg);
+  }
+  ```
+
 ### Further Reading
   - [Understanding Angular's $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
   - [Watchers, Digest Cycle And Dirty Check In AngularJS](https://www.c-sharpcorner.com/article/watchers-digest-cycle-and-dirty-check-in-angular/)
-
-## Services
 
 ## Directives
   A directive is a function which executes when the compiler encounters it in the DOM.
@@ -440,11 +438,12 @@
       // using a pair of {} to isolate directive scope from the parent scope
       scope: {
         // myProp is the local scope property name,
-        //'=' means two-way binding with myProp's normalized name my-prop will be used in the HTML template
+        //'=' means two-way binding with myProp's normalised name my-prop will be used in the HTML template
         myProp: '='
         // using '@' to bind myAttr to the value of DOM attribute my-attribute
         // '@' means one-way binding
         myAttr: '@'
+
       },
       ...
     };
@@ -459,16 +458,13 @@
 
   ```
 
-
-
-
 ## Components
   In AngularJS, a Component is a special kind of directive that uses a simpler configuration which is suitable for a component-based application structure.
 
 ### Advantages of Components:
   - simpler configuration than plain directives
   - promote sane defaults and best practices
-  - optimized for component-based architecture
+  - optimised for component-based architecture
   - writing component directives will make it easier to upgrade to Angular 2
 
 
