@@ -16,22 +16,16 @@
 
       // MenuDataService.getAllCategories(); will return a promise
       return response;
-    };
+    }
 
+    service.getItemsForCategory = function (shortName) {
 
+      var response = $http({
+        method: "GET",
+        url: ("https://davids-restaurant.herokuapp.com/menu_items.json?category=" + shortName)
+      });
 
-
-
-
-
-
-    // service.getItemsForCategory(categoryShortName) = function () {
-    //   var response = $http({
-    //     method: "GET",
-    //     url: ("https://davids-restaurant.herokuapp.com/menu_items.json?category=" + categoryShortName)
-    //   });
-    //
-    //   return response;
-    // };
+      return response;
+    }
   }
 })();

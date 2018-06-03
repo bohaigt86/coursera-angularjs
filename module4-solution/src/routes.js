@@ -17,7 +17,7 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
   .state('home', {
     url: '/',
     templateUrl: 'src/templates/home.template.html'
-      })
+  })
 
   // Categories page
   .state('categories', {
@@ -31,11 +31,16 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
     }
   })
 
-  // Items page
   .state('items', {
-    url: '/items',
-    templateUrl: 'src/templates/items.template.html',
-    controller: 'ItemsController as itemCtrl'
+    url: '/items/{shortName}',
+    templateUrl: 'src/templates/items-list.template.html',
+    controller: 'ItemsController as itemCtrl',
+    resolve: {
+      items: ['$stateParams', 'MenuDataService',
+              function ($stateParams, MenuDataService) {
+                return MenuDataService.getItemsForCategory($stateParams.shortName);
+      }]
+    }
   });
 
 }
