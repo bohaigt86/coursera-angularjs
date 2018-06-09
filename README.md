@@ -128,6 +128,8 @@
   .service('MyService', MyService); //Services created this way is SINGLETON
   ```
 ### 3.2 Customized Services with .factory
+  Factory is a central place that produces new objects or functions. It can produce any type of object, not just a singleton. Here we are using it to produce dynamically customizable services.
+
   This is how you register factory function:
 
   ```javascript
@@ -148,11 +150,18 @@
     };
 
     return factory;
+
+    ...
+
+    // To use it
+    var someService = MyService();
+
+    someService.method();
   }
   ```
 
   The other ways is to return an object literal:
-  
+
   ```javascript
   function MyService() {
     var factory = {
@@ -162,6 +171,13 @@
     };
 
     return factory;
+
+    ...
+
+    // To use it
+    var someService = MyService.getSomeService();
+
+    someService.method();
   }
   ```
 
