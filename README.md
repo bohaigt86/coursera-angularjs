@@ -84,7 +84,7 @@
   ```
 
 ## 2. Filters
-### 2.1 Creating Custom Filters
+### 2.1 Creating Custome Filters
   Step 1. Create Filter Factory Function
 
   ```javascript
@@ -115,6 +115,63 @@
   ```
 
 ## 3. Services
+
+### 3.1 Customized Services with .service
+  A custom service is used for sharing data between controllers.
+
+  This is how you register service function:
+
+  ```javascript
+  angular.module('myApp', [])
+  .controller('myCtrl', MyCtrl)
+  // Register service function CONSTRUCTOR
+  .service('MyService', MyService); //Services created this way is SINGLETON
+  ```
+### 3.2 Customized Services with .factory
+  This is how you register factory function:
+
+  ```javascript
+  angular.module('myApp', [])
+  .controller('myCtrl', MyCtrl)
+  // Register service factory function that produces service
+  .factory('MyService', MyService); //Services created this way is not SINGLETON
+  ```
+
+  There are two ways of writing the factory function.
+
+  One way is to return a function:
+
+  ```javascript
+  function MyService() {
+    var factory = function () {
+      return new SomeService();
+    };
+
+    return factory;
+  }
+  ```
+
+  The other ways is to return an object literal:
+  
+  ```javascript
+  function MyService() {
+    var factory = {
+      getSomeService: function () {
+        return new SomeService();
+      }
+    };
+
+    return factory;
+  }
+  ```
+
+### 3.3 Customized Services with .provider
+
+### 3.4 Singleton Design Pattern
+
+### 3.5 Factory Design Pattern
+
+### 3.6 Lazily Instantiated
 
 ## 4. Directives
   A directive is a function which executes when the compiler encounters it in the DOM.
