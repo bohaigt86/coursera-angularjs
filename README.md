@@ -3,21 +3,290 @@
 
 [AngularJS Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
 
-## Key concepts
-  1. [Model-View-ViewModel](#model-view-viewmodel)
+## Main Artefacts
   1. [Controllers](#controllers)
-  1. [Scope](#scope)
-  1. [Expressions and Interpolation](#expressions-and-interpolation)
-  1. [Data Binding](#data-binding)
-  1. [Digest Cycle](#digest-cycle)
-  1. [Dependency Injection](#dependency-injection)
-  1. [Services](#services)
   1. [Filters](#filters)
+  1. [Services](#services)
   1. [Directives](#directives)
   1. [Components](#components)
   1. [Modules](#modules)
-  1. [Compilation](#compilation)
 
+## 1. Controllers
+    In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
+
+    We can attach a controller to the DOM using ngController directive. In this way, a new child scope will be created and made available as an injectable parameter to the Controller's construction function as $scope.
+
+    Controllers are used to:
+    - set up the initial state of the $scope object
+    - add behaviours to the $scope object
+
+### 1.1 Setting Up the Initial State of a $scope Object
+
+    ```javascript
+    var myApp = angular.module('myApp',[]); //create an module for our application
+
+    myApp.controller('GreetingController', ['$scope', function($scope) { //add the controller's constructor function to the module using .controller()
+      $scope.greeting = 'Hola!';
+    }]);
+    ```
+    Attaching the controller's constructor function to the module keeps it out of the global scope.
+
+    Attach the controller to the DOM using the ng-controller directive, so the greeting property can data-bound to the template.
+
+    ```html
+    <div ng-controller="GreetingController">
+    {{ greeting }}
+    </div>
+    ```
+
+### 1.2 Adding Behaviour to a $scope Object
+    In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
+
+    The following example uses a Controller to add a method, which doubles a number, to the scope:
+
+    ```javascript
+    var myApp = angular.module('myApp',[]);
+
+    myApp.controller('DoubleController', ['$scope', function($scope) {
+      $scope.double = function(value) { return value * 2; };
+    }]);
+    ```
+
+    ```html
+    <div ng-controller="DoubleController">
+      Two times <input ng-model="num"> equals {{ double(num) }}
+    </div>
+    ```
+
+    Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
+
+### 1.3 Prototypical Inheritance
+
+### 1.4 Controller As Syntax
+    Please finish reading the previous section 'Prototypical Inheritance' before you dive into this section.
+
+    'Controller as label' syntax is based on prototypical inheritance, meaning if the controller has been attached using the controller as syntax then the controller instance will be assigned to a property on the scope. The 'label' is a reference to 'this', the instance of the Controller.
+
+
+    For instance:
+
+    ```html
+    <div ng-controller='ParentController as parent'>
+      <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+      Parent value: {{ parent.value }}
+      <div ng-controller='ChildController as child'>
+        <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+        Child value: {{ child.value }}
+        <!-- It is okay to access parent.value even though we put it inside the child controller -->
+        Parent value: {{ parent.value }}
+      </div>
+    </div>
+    ```
+
+## 2. Filters
+### 2.1 Creating Custom Filters
+  Step 1. Create Filter Factory Function
+
+  ```javascript
+  function CustomFilterFactory() {
+    return function (input) {
+      return changeInput;
+    };
+  }
+  ```
+
+  Step 2. Register Filter Factory With Module
+
+  ```javascript
+  angular.module('app', [])
+  .controller('ctrl', Ctrl)
+  .filter('custom', CustomFilterFactory);
+  ```
+
+  Step 3. Inject It With nameFilter
+
+  ```javascript
+  Ctrl.$inject('$scope', 'customFilter');
+
+  function Ctrl($scope, customFilter) {
+    var msg = "some input";
+    customFilter(msg);
+  }
+  ```
+
+## 3. Services
+
+## 4. Directives
+  A directive is a function which executes when the compiler encounters it in the DOM.
+  Directives apply special behaviour to attributes and elements in the HTML.
+
+  AngularJS comes with a few built-in directives, like ngBind, ngModel. Take ngBind for instance, its attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
+
+  Below are examples of invoking the ng-bind directives:
+
+  ```javascript
+  <span ng-bind="exp"></span>
+  <span class="ng-bind: exp;"></span>
+  <ng-bind></ng-bind>
+  ```
+
+### 4.1 Normalization
+  AngularJS normalizes an element's tag and attribute name to determine which elements match which directives.
+
+  The normalization process is as follows:
+
+  Strip x- and data- from the front of the element/attributes.
+  Convert the \:, \-, or \_-delimited name to camelCase.
+
+  For example, the following forms are all equivalent and match the ngBind directive:
+
+  ```html
+  <div ng-controller="Controller">
+    Hello <input ng-model='name'> <hr/>
+    <span ng-bind="name"></span> <br/>
+    <span ng:bind="name"></span> <br/>
+    <span ng_bind="name"></span> <br/>
+    <span data-ng-bind="name"></span> <br/>
+    <span x-ng-bind="name"></span> <br/>
+  </div>
+  ```
+
+### 4.2 Custom Directives
+  - Step 1. Register Directive
+
+  ```javascript
+  angular.module('app', [])
+  .controller('MyCtrl', MyCtrl)
+  .directive('myTag', MyTag); //MyTag is a factory function that returns DDO
+  ```
+
+  - Step 2. Define Factory Function
+  ```javascript
+  MyTag.$inject = [...];
+  function MyTag(...) {
+    var ddo= {
+      templateUrl: template.html
+      ...
+    };
+
+    return ddo; // Very important to return ddo
+  }
+  ```
+
+  - Step 3. Use in HTML
+  ```html
+  <!-- Use normalized name of MyTag-->
+  <my-tag></my-tag>
+  ```
+
+### 4.3 Directive's Isolate Scope
+  To avoid high coupling between a controller and directives, we can implement isolate scope in custom direcrtives. Isolate scope is compulsory in components in AngularJS.
+
+  Directive's default scope is inherited from its parent, which may cause some problem.
+  Let's have a look at the following example where the directive hasn't used the isolate scope yet
+
+  ```html
+  <!-- index.html -->
+  <div ng-controller="MyController1 as ctrl1">
+    <my-directive></my-directive>
+  </div>
+
+  <div ng-controller="MyController2 as ctrl2">
+    <my-directive></my-directive>
+  </div>
+  ```
+
+  ```javascript
+  // app.js
+  angular.module('myModule', [])
+  .controller('MyController', MyController)
+  .directive('myDirective', MyDirective);
+
+  function MyDirective() {
+    var ddo = {
+      templateUrl: 'mydirective.html',
+    }
+  }
+  ```
+
+  ```html
+  <!-- mydirective.html -->
+  <div>
+    {{ ctrl.item.name }} <!-- it's either ctrl1 or ctrl2, this directive cannot fit in both controllers -->
+  </div>
+  ```
+
+  We often encounter this situation, so we need to re-architecture our custome directive so it becomes independent from the outer environment. Ideally the outer environment will pass a certain value into it like pass an argument into a function. This is when we need to implement isolate scope.
+
+  ```javascript
+  function MyDirective() {
+    var ddo = {
+      // using a pair of {} to isolate directive scope from the parent scope
+      scope: {
+        // myProp is the local scope property name,
+        //'=' means two-way binding with myProp's normalised name my-prop will be used in the HTML template
+        myProp: '='
+        // using '@' to bind myAttr to the value of DOM attribute my-attribute
+        // '@' means one-way binding
+        myAttr: '@'
+
+      },
+      ...
+    };
+
+    return ddo;
+  }
+  ```
+
+  ```html
+  <my-directive my-prop="outerProper"></my-directive>
+  <my-directive my-attr="{{ outerAttribute }}"></my-directive>
+
+  ```
+
+## 5. Components
+  In AngularJS, a Component is a special kind of directive that uses a simpler configuration which is suitable for a component-based application structure.
+
+### 5.1 Advantages of Components:
+  - simpler configuration than plain directives
+  - promote sane defaults and best practices
+  - optimised for component-based architecture
+  - writing component directives will make it easier to upgrade to Angular 2
+
+## 6. Modules
+  Think of a module as a container of different parts of an app, such as controllers, directives and components.
+  Think of a module as the "main function" of your app. It declaratively specify how an app should be bootstrapped.
+
+  ```javascript
+  //
+  <div ng-app="myApp">
+    <div>
+      {{ 'World' | greet }}
+    </div>
+  </div>
+  ```
+
+  ```javascript
+  // declare a module
+  var myAppModule = angular.module('myApp', []);
+
+  // configure the module.
+  // in this example we will create a greeting filter
+  myAppModule.filter('greet', function() {
+    return function(name) {
+      return 'Hello, ' + name + '!';
+    };
+  });
+  ```
+
+## Important Concepts
+  1. [Model-View-ViewModel](#model-view-viewmodel)
+  1. [Expressions and Interpolation](#expressions-and-interpolation)
+  1. [Scope](#scope)
+  1. [Data Binding](#data-binding)
+  1. [Digest Cycle](#digest-cycle)
+  1. [Dependency Injection](#dependency-injection)
+  1. [Compilation](#compilation)
 
 ## Model-View-ViewModel
   Model: represents and holds RAW DATA (i.e. data from database or rest api calls from servers )
@@ -36,78 +305,6 @@
   - NEVER asks the view to display anything
   - responds to view events, aka presentation logic
   - calls for other functionality to handle business logic
-
-## Controllers
-  In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
-
-  We can attach a controller to the DOM using ngController directive. In this way, a new child scope will be created and made available as an injectable parameter to the Controller's construction function as $scope.
-
-  Controllers are used to:
-  - set up the initial state of the $scope object
-  - add behaviours to the $scope object
-
-### Setting Up the Initial State of a $scope Object
-
-  ```javascript
-  var myApp = angular.module('myApp',[]); //create an module for our application
-
-  myApp.controller('GreetingController', ['$scope', function($scope) { //add the controller's constructor function to the module using .controller()
-    $scope.greeting = 'Hola!';
-  }]);
-  ```
-  Attaching the controller's constructor function to the module keeps it out of the global scope.
-
-  Attach the controller to the DOM using the ng-controller directive, so the greeting property can data-bound to the template.
-
-  ```html
-  <div ng-controller="GreetingController">
-  {{ greeting }}
-  </div>
-  ```
-
-### Adding Behaviour to a $scope Object
-  In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
-
-  The following example uses a Controller to add a method, which doubles a number, to the scope:
-
-  ```javascript
-  var myApp = angular.module('myApp',[]);
-
-  myApp.controller('DoubleController', ['$scope', function($scope) {
-    $scope.double = function(value) { return value * 2; };
-  }]);
-  ```
-
-  ```html
-  <div ng-controller="DoubleController">
-    Two times <input ng-model="num"> equals {{ double(num) }}
-  </div>
-  ```
-
-  Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
-
-### Prototypical Inheritance
-
-### Controller As Syntax
-  Please finish reading the previous section 'Prototypical Inheritance' before you dive into this section.
-
-  'Controller as label' syntax is based on prototypical inheritance, meaning if the controller has been attached using the controller as syntax then the controller instance will be assigned to a property on the scope. The 'label' is a reference to 'this', the instance of the Controller.
-
-
-  For instance:
-
-  ```html
-  <div ng-controller='ParentController as parent'>
-    <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
-    Parent value: {{ parent.value }}
-    <div ng-controller='ChildController as child'>
-      <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
-      Child value: {{ child.value }}
-      <!-- It is okay to access parent.value even though we put it inside the child controller -->
-      Parent value: {{ parent.value }}
-    </div>
-  </div>
-  ```
 
 ## Scope
   - Scope is an object that refers to the application model.
@@ -287,216 +484,16 @@
   };
   ```
 
+### Further Reading
+  - [Understanding Angular's $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
+  - [Watchers, Digest Cycle And Dirty Check In AngularJS](https://www.c-sharpcorner.com/article/watchers-digest-cycle-and-dirty-check-in-angular/)
+
 ## Dependency Injection
   Dependency injection is a technique whereby one object supplies the dependencies of another object. The intent behind dependency injection is to **decouple** objects to the extent that no client code has to be changed simply because an object it depends on needs to be changed to a different one.
 
   The AngularJS injector subsystem is in charge of creating components, resolving their dependencies, and providing them to other components as requested.
 
-## Services
-
-## Filters
-
-### Creating Custom Filters
-  Step 1. Create Filter Factory Function
-
-  ```javascript
-  function CustomFilterFactory() {
-    return function (input) {
-      return changeInput;
-    };
-  }
-  ```
-
-  Step 2. Register Filter Factory With Module
-
-  ```javascript
-  angular.module('app', [])
-  .controller('ctrl', Ctrl)
-  .filter('custom', CustomFilterFactory);
-  ```
-
-  Step 3. Inject It With nameFilter
-
-  ```javascript
-  Ctrl.$inject('$scope', 'customFilter');
-
-  function Ctrl($scope, customFilter) {
-    var msg = "some input";
-    customFilter(msg);
-  }
-  ```
-
-### Further Reading
-  - [Understanding Angular's $apply() and $digest()](https://www.sitepoint.com/understanding-angulars-apply-digest/)
-  - [Watchers, Digest Cycle And Dirty Check In AngularJS](https://www.c-sharpcorner.com/article/watchers-digest-cycle-and-dirty-check-in-angular/)
-
-## Directives
-  A directive is a function which executes when the compiler encounters it in the DOM.
-  Directives apply special behaviour to attributes and elements in the HTML.
-
-  AngularJS comes with a few built-in directives, like ngBind, ngModel. Take ngBind for instance, its attribute tells AngularJS to replace the text content of the specified HTML element with the value of a given expression, and to update the text content when the value of that expression changes.
-
-  Below are examples of invoking the ng-bind directives:
-
-  ```javascript
-  <span ng-bind="exp"></span>
-  <span class="ng-bind: exp;"></span>
-  <ng-bind></ng-bind>
-  ```
-
-### Normalization
-  AngularJS normalizes an element's tag and attribute name to determine which elements match which directives.
-
-  The normalization process is as follows:
-
-  Strip x- and data- from the front of the element/attributes.
-  Convert the \:, \-, or \_-delimited name to camelCase.
-
-  For example, the following forms are all equivalent and match the ngBind directive:
-
-  ```html
-  <div ng-controller="Controller">
-    Hello <input ng-model='name'> <hr/>
-    <span ng-bind="name"></span> <br/>
-    <span ng:bind="name"></span> <br/>
-    <span ng_bind="name"></span> <br/>
-    <span data-ng-bind="name"></span> <br/>
-    <span x-ng-bind="name"></span> <br/>
-  </div>
-  ```
-
-### Custom Directives
-  - Step 1. Register Directive
-
-  ```javascript
-  angular.module('app', [])
-  .controller('MyCtrl', MyCtrl)
-  .directive('myTag', MyTag); //MyTag is a factory function that returns DDO
-  ```
-
-  - Step 2. Define Factory Function
-  ```javascript
-  MyTag.$inject = [...];
-  function MyTag(...) {
-    var ddo= {
-      templateUrl: template.html
-      ...
-    };
-
-    return ddo; // Very important to return ddo
-  }
-  ```
-
-  - Step 3. Use in HTML
-  ```html
-  <!-- Use normalized name of MyTag-->
-  <my-tag></my-tag>
-  ```
-
-### Directive's Isolate Scope
-  To avoid high coupling between a controller and directives, we can implement isolate scope in custom direcrtives. Isolate scope is compulsory in components in AngularJS.
-
-  Directive's default scope is inherited from its parent, which may cause some problem.
-  Let's have a look at the following example where the directive hasn't used the isolate scope yet
-
-  ```html
-  <!-- index.html -->
-  <div ng-controller="MyController1 as ctrl1">
-    <my-directive></my-directive>
-  </div>
-
-  <div ng-controller="MyController2 as ctrl2">
-    <my-directive></my-directive>
-  </div>
-  ```
-
-  ```javascript
-  // app.js
-  angular.module('myModule', [])
-  .controller('MyController', MyController)
-  .directive('myDirective', MyDirective);
-
-  function MyDirective() {
-    var ddo = {
-      templateUrl: 'mydirective.html',
-    }
-  }
-  ```
-
-  ```html
-  <!-- mydirective.html -->
-  <div>
-    {{ ctrl.item.name }} <!-- it's either ctrl1 or ctrl2, this directive cannot fit in both controllers -->
-  </div>
-  ```
-
-  We often encounter this situation, so we need to re-architecture our custome directive so it becomes independent from the outer environment. Ideally the outer environment will pass a certain value into it like pass an argument into a function. This is when we need to implement isolate scope.
-
-  ```javascript
-  function MyDirective() {
-    var ddo = {
-      // using a pair of {} to isolate directive scope from the parent scope
-      scope: {
-        // myProp is the local scope property name,
-        //'=' means two-way binding with myProp's normalised name my-prop will be used in the HTML template
-        myProp: '='
-        // using '@' to bind myAttr to the value of DOM attribute my-attribute
-        // '@' means one-way binding
-        myAttr: '@'
-
-      },
-      ...
-    };
-
-    return ddo;
-  }
-  ```
-
-  ```html
-  <my-directive my-prop="outerProper"></my-directive>
-  <my-directive my-attr="{{ outerAttribute }}"></my-directive>
-
-  ```
-
-## Components
-  In AngularJS, a Component is a special kind of directive that uses a simpler configuration which is suitable for a component-based application structure.
-
-### Advantages of Components:
-  - simpler configuration than plain directives
-  - promote sane defaults and best practices
-  - optimised for component-based architecture
-  - writing component directives will make it easier to upgrade to Angular 2
-
-
-
-
 ## Compilation ([Go to angularjs.org](https://docs.angularjs.org/guide/compiler))
   Compile is an AngularJS service.
 
   Compilation happens in two phases: compile and link. In the compiling phase, it traverses the DOM and collect all directives and returns a linking function. In the linking phase, it combines the directives with a scope and produce a live view.
-
-## Modules
-  Think of a module as a container of different parts of an app, such as controllers, directives and components.
-  Think of a module as the "main function" of your app. It declaratively specify how an app should be bootstrapped.
-
-  ```javascript
-  //
-  <div ng-app="myApp">
-    <div>
-      {{ 'World' | greet }}
-    </div>
-  </div>
-  ```
-
-  ```javascript
-  // declare a module
-  var myAppModule = angular.module('myApp', []);
-
-  // configure the module.
-  // in this example we will create a greeting filter
-  myAppModule.filter('greet', function() {
-    return function(name) {
-      return 'Hello, ' + name + '!';
-    };
-  });
-  ```
