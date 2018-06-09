@@ -128,7 +128,7 @@
   .service('MyService', MyService); //Services created this way is SINGLETON
   ```
 ### 3.2 Customized Services with .factory
-  Factory is a central place that produces new objects or functions. It can produce any type of object, not just a singleton. Here we are using it to produce dynamically customizable services.
+  Factory is a central place that produces new objects or functions. It can produce any type of object, not just a singleton. Now we are using it to produce dynamically customizable services.
 
   This is how you register factory function:
 
@@ -182,6 +182,63 @@
   ```
 
 ### 3.3 Customized Services with .provider
+  Use .provide to configure a facotry before the app starts. It is the most verbose, but most flexible way of customizing services. It configure factory not just at time of use, but at app bootstrapping stage.
+
+  This is how you define a provide function:
+
+  ```javascript
+  function MyServiceProvider() {
+    var provider = this;
+    provider.config = {...};
+
+    // angular expects the provider to have a $get function
+    // and will treat it as a factory function
+    provider.$get = function () {
+      var service = new MyService(provider.config.prop);
+
+      return service
+    };
+  }
+  ```
+
+  Then register provider function with module:
+
+  ```javascript
+  angular.module('myApp', [])
+  .controller('myCtrl', MyCtrl)
+  // Register provide function that produces service
+  .provider('MyService', MyServiceProvider);
+  ```
+
+  It should be injected as usual:
+
+  ```javascript
+  myCtrl.$inject['MyService'];
+  function MyCtrl(MyService) {
+    MyService.someMethod();
+  }
+  ```
+
+  Using provider allows you to register config function whenever necessary:
+
+  ```javascript
+  angular.module('myApp', [])
+  .controller('myCtrl', MyCtrl)
+  .provider('MyService', MyServiceProvider)
+  // Run before any services, factories, or controllers are instantiated
+  .config(Config);
+  ```
+
+  Then inject provider into config:
+
+  ```javascript
+  Config.$inject = ['MyServiceProvider'];
+
+  function Config(MyServiceProvider) {
+    ServiceProvider.defaults.prop = 'value';
+  };
+  ```
+
 
 ### 3.4 Singleton Design Pattern
 
