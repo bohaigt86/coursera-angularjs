@@ -12,76 +12,76 @@
   1. [Modules](#modules)
 
 ## 1. Controllers
-    In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
+  In AngularJS, a Controller is defined by a JavaScript constructor function that is used to augment the AngularJS Scope.
 
-    We can attach a controller to the DOM using ngController directive. In this way, a new child scope will be created and made available as an injectable parameter to the Controller's construction function as $scope.
+  We can attach a controller to the DOM using ngController directive. In this way, a new child scope will be created and made available as an injectable parameter to the Controller's construction function as $scope.
 
-    Controllers are used to:
-    - set up the initial state of the $scope object
-    - add behaviours to the $scope object
+  Controllers are used to:
+  - set up the initial state of the $scope object
+  - add behaviours to the $scope object
 
 ### 1.1 Setting Up the Initial State of a $scope Object
 
-    ```javascript
-    var myApp = angular.module('myApp',[]); //create an module for our application
+  ```javascript
+  var myApp = angular.module('myApp',[]); //create an module for our application
 
-    myApp.controller('GreetingController', ['$scope', function($scope) { //add the controller's constructor function to the module using .controller()
-      $scope.greeting = 'Hola!';
-    }]);
-    ```
-    Attaching the controller's constructor function to the module keeps it out of the global scope.
+  myApp.controller('GreetingController', ['$scope', function($scope) { //add the controller's constructor function to the module using .controller()
+    $scope.greeting = 'Hola!';
+  }]);
+  ```
+  Attaching the controller's constructor function to the module keeps it out of the global scope.
 
-    Attach the controller to the DOM using the ng-controller directive, so the greeting property can data-bound to the template.
+  Attach the controller to the DOM using the ng-controller directive, so the greeting property can data-bound to the template.
 
-    ```html
-    <div ng-controller="GreetingController">
-    {{ greeting }}
-    </div>
-    ```
+  ```html
+  <div ng-controller="GreetingController">
+  {{ greeting }}
+  </div>
+  ```
 
 ### 1.2 Adding Behaviour to a $scope Object
-    In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
+  In order to react to events, we need to add behaviour to the scope, by attaching methods to the $scope object.
 
-    The following example uses a Controller to add a method, which doubles a number, to the scope:
+  The following example uses a Controller to add a method, which doubles a number, to the scope:
 
-    ```javascript
-    var myApp = angular.module('myApp',[]);
+  ```javascript
+  var myApp = angular.module('myApp',[]);
 
-    myApp.controller('DoubleController', ['$scope', function($scope) {
-      $scope.double = function(value) { return value * 2; };
-    }]);
-    ```
+  myApp.controller('DoubleController', ['$scope', function($scope) {
+    $scope.double = function(value) { return value * 2; };
+  }]);
+  ```
 
-    ```html
-    <div ng-controller="DoubleController">
-      Two times <input ng-model="num"> equals {{ double(num) }}
-    </div>
-    ```
+  ```html
+  <div ng-controller="DoubleController">
+    Two times <input ng-model="num"> equals {{ double(num) }}
+  </div>
+  ```
 
-    Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
+  Any objects assigned to the scope become model properties. Any methods assigned to the scope become available in the view, and can be invoked via AngularJS expressions and ng event handler directives (e.g. ngClick).
 
 ### 1.3 Prototypical Inheritance
 
 ### 1.4 Controller As Syntax
-    Please finish reading the previous section 'Prototypical Inheritance' before you dive into this section.
+  Please finish reading the previous section 'Prototypical Inheritance' before you dive into this section.
 
-    'Controller as label' syntax is based on prototypical inheritance, meaning if the controller has been attached using the controller as syntax then the controller instance will be assigned to a property on the scope. The 'label' is a reference to 'this', the instance of the Controller.
+  'Controller as label' syntax is based on prototypical inheritance, meaning if the controller has been attached using the controller as syntax then the controller instance will be assigned to a property on the scope. The 'label' is a reference to 'this', the instance of the Controller.
 
 
-    For instance:
+  For instance:
 
-    ```html
-    <div ng-controller='ParentController as parent'>
+  ```html
+  <div ng-controller='ParentController as parent'>
+    <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+    Parent value: {{ parent.value }}
+    <div ng-controller='ChildController as child'>
       <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
+      Child value: {{ child.value }}
+      <!-- It is okay to access parent.value even though we put it inside the child controller -->
       Parent value: {{ parent.value }}
-      <div ng-controller='ChildController as child'>
-        <!-- Any properties or methods added to the $scope now are assigned to $scope.parent -->
-        Child value: {{ child.value }}
-        <!-- It is okay to access parent.value even though we put it inside the child controller -->
-        Parent value: {{ parent.value }}
-      </div>
     </div>
-    ```
+  </div>
+  ```
 
 ## 2. Filters
 ### 2.1 Creating Custom Filters
