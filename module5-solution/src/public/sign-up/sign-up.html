@@ -3,8 +3,8 @@
     <h2>Sign Up</h2>
     <form name="regForm" class="col-sm-8" novalidate>
       <div id="first-name" class="form-group">
-        <label for="">First Name (At least 2 characters long)</label>
-        <input class="form-control" type="text" name="firstname" placeholder="First Name"
+        <label for="">First Name</label>
+        <input class="form-control" type="text" name="firstname" placeholder="At least 2 characters long"
                ng-model='signUpCtrl.user.firstname'
                minlength="2"
                required>
@@ -20,8 +20,8 @@
       </div>
 
       <div id="last-name" class="form-group">
-        <label for="">Last Name (At least 2 characters long)</label>
-        <input class="form-control" type="text" name="lastname" placeholder="Last Name"
+        <label for="">Last Name</label>
+        <input class="form-control" type="text" name="lastname" placeholder="At least 2 characters long"
                ng-model='signUpCtrl.user.lastname'
                minlength="2"
                required>
@@ -37,8 +37,8 @@
       </div>
 
       <div id="menu-num" class="form-group">
-        <label for="">Favorite Food Code Name</label>
-        <input class="form-control" type="text" name="menu_num" placeholder="Your Favorite Food Code Name"
+        <label for="">Favorite Food Code Name <a style="font-size: 12px" ui-sref="public.menu">(In Case You Forgot the Code Name)</a> </label>
+        <input class="form-control" type="text" name="menu_num" placeholder="e.g., A1, B2 or SP8"
             ng-model="signUpCtrl.user.menu_num"
             ng-blur="signUpCtrl.validateMenuNum()"
             required>

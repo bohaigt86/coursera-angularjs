@@ -8,17 +8,16 @@
 
 <div ng-if="userInfoCtrl.signUpDone">
   <div class="container">
-    <h1>User Info</h1>
 
     <div class="">
-      <label>First Name: </label>
-      <span>{{ userInfoCtrl.userinfo.firstname }}</span>
+      <!-- <label>First Name: </label> -->
+      <h3> Welcome! <div style="color: #557c3e; margin: 1.5rem 0;">{{ userInfoCtrl.userinfo.firstname }} {{ userInfoCtrl.userinfo.lastname }}</div> </h3>
     </div>
 
-    <div class="">
+    <!-- <div class="">
       <label>Last Name: </label>
-      <span>{{ userInfoCtrl.userinfo.lastname }}</span>
-    </div>
+      <span></span>
+    </div> -->
 
     <div class="">
       <label>Email: </label>
