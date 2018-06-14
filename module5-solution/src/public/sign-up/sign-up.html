@@ -3,7 +3,7 @@
     <h2>Sign Up</h2>
     <form name="regForm" class="col-sm-8" novalidate>
       <div id="first-name" class="form-group">
-        <label for="">First Name</label>
+        <label for="">First Name (At least 2 characters long)</label>
         <input class="form-control" type="text" name="firstname" placeholder="First Name"
                ng-model='signUpCtrl.user.firstname'
                minlength="2"
@@ -20,7 +20,7 @@
       </div>
 
       <div id="last-name" class="form-group">
-        <label for="">Last Name</label>
+        <label for="">Last Name (At least 2 characters long)</label>
         <input class="form-control" type="text" name="lastname" placeholder="Last Name"
                ng-model='signUpCtrl.user.lastname'
                minlength="2"
@@ -34,6 +34,19 @@
                 ng-if="regForm.lastname.$error.required && regForm.lastname.$touched">
                 Last name is required.
               </span>
+      </div>
+
+      <div id="menu-num" class="form-group">
+        <label for="">Favorite Food Code Name</label>
+        <input class="form-control" type="text" name="menu_num" placeholder="Your Favorite Food Code Name"
+            ng-model="signUpCtrl.user.menu_num"
+            ng-blur="signUpCtrl.validateMenuNum()"
+            required>
+
+            <!-- <span>{{ signUpCtrl.user.menu_num }}</span> -->
+            <span ng-if="signUpCtrl.invalidItem && regForm.menu_num.$touched">
+              No such dish exists.
+            </span>
       </div>
 
       <div id="email" class="form-group">
@@ -57,19 +70,6 @@
             <!-- {{signUpCtrl.user.phone}} -->
             <span ng-if="regForm.phone.$invalid && regForm.phone.$touched">
               Phone must be in the format ###-###-####.
-            </span>
-      </div>
-
-      <div id="menu-num" class="form-group">
-        <label for="">Favorite Food Code Name</label>
-        <input class="form-control" type="text" name="menu_num" placeholder="Your Favorite Food Code Name"
-            ng-model="signUpCtrl.user.menu_num"
-            ng-blur="signUpCtrl.validateMenuNum()"
-            required>
-
-            <!-- <span>{{ signUpCtrl.user.menu_num }}</span> -->
-            <span ng-if="signUpCtrl.invalidItem && regForm.menu_num.$touched">
-              No such dish exists.
             </span>
       </div>
 
