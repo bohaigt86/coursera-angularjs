@@ -17,13 +17,13 @@
         promise.then(function (response) {
           console.log("So you like " + response.data.name + "?");
           signUpCtrl.invalidItem = false;
-          console.log(signUpCtrl.invalidItem);
+          // console.log(signUpCtrl.invalidItem);
           return true;
         })
         .catch(function (error) {
-          console.log("Nothing is found.");
+          // console.log("Nothing is found.");
           signUpCtrl.invalidItem = true;
-          console.log(signUpCtrl.invalidItem);
+          // console.log(signUpCtrl.invalidItem);
           return false;
         });
       };

@@ -52,15 +52,6 @@ function routeConfig ($stateProvider) {
       templateUrl: 'src/public/user-info/user-info.html',
       controller: 'UserInfoController',
       controllerAs: 'userInfoCtrl',
-      resolve: {
-        userInfo: ['UserInfoService', function (UserInfoService) {
-          return UserInfoService.showItems();
-        }],
-        favItem: ['UserInfoService', function (UserInfoService) {
-          var userInfo = UserInfoService.showItems();
-          return UserInfoService.getItem(userInfo.menu_num);
-        }]
-      }
     });
 }
 })();

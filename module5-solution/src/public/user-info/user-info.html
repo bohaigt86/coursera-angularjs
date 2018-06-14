@@ -1,7 +1,12 @@
-<div ng-if="userInfoCtrl.userinfo == false">
-  <h1>hi</h1>
+<div ng-if="!userInfoCtrl.signUpDone">
+  <div class="container">
+    <label>Sorry, you need to <a ui-sref="public.signup" style="text-decoration: none">sign up</a> first.</label>
+  </div>
 </div>
-<div ng-if="userInfoCtrl.userinfo !== false">
+
+
+
+<div ng-if="userInfoCtrl.signUpDone">
   <div class="container">
     <h1>User Info</h1>
 
@@ -31,7 +36,7 @@
         <img class="" ng-src="{{userInfoCtrl.apiPath}}/images/{{userInfoCtrl.favItem.short_name}}.jpg" alt="{{userInfoCtrl.favItem.name}}">
       </div>
       <div class="">
-        <label for="">Name: {{ userInfoCtrl.favItem.name }}<label>
+        <label for="">{{ userInfoCtrl.favItem.name }}<label>
       </div>
       <div class="">
         <p for="">{{ userInfoCtrl.favItem.description }}</p>
