@@ -1,0 +1,44 @@
+<div ng-if="userInfoCtrl.userinfo == false">
+  <h1>hi</h1>
+</div>
+<div ng-if="userInfoCtrl.userinfo !== false">
+  <div class="container">
+    <h1>User Info</h1>
+
+    <div class="">
+      <label>First Name: </label>
+      <span>{{ userInfoCtrl.userinfo.firstname }}</span>
+    </div>
+
+    <div class="">
+      <label>Last Name: </label>
+      <span>{{ userInfoCtrl.userinfo.lastname }}</span>
+    </div>
+
+    <div class="">
+      <label>Email: </label>
+      <span>{{ userInfoCtrl.userinfo.email }}</span>
+    </div>
+
+    <div class="">
+      <label>Phone: </label>
+      <span>{{ userInfoCtrl.userinfo.phone }}</span>
+    </div>
+
+    <div class="">
+      <label for="">Your Favorite Dish</label>
+      <div class="">
+        <img class="" ng-src="{{userInfoCtrl.apiPath}}/images/{{userInfoCtrl.favItem.short_name}}.jpg" alt="{{userInfoCtrl.favItem.name}}">
+      </div>
+      <div class="">
+        <label for="">Name: {{ userInfoCtrl.favItem.name }}<label>
+      </div>
+      <div class="">
+        <p for="">{{ userInfoCtrl.favItem.description }}</p>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
